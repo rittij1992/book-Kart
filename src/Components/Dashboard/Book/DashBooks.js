@@ -1,11 +1,11 @@
-import { useEffect, useState, useContext  } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RedirectToBookListContext } from "../../../ContextApi/RedirectBookListContext";
 import FilterBook from "./FilterBook";
 
 const DashBooks = () => {
 
-    const {allBookLink, setAllBookLink} = useContext(RedirectToBookListContext);
+    // const {allBookLink, setAllBookLink} = useContext(RedirectToBookListContext);
     const [dashBooks, setDashBooks] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate();
@@ -13,18 +13,29 @@ const DashBooks = () => {
     const [currentPageId, setCurrentPageId] = useState(1);
     const [searchText, setSearchText] = useState('');
     const [searchCat, setSearchCat] = useState('');
+    const [searchWriter, setSearchWriter] = useState('');
 
 
-    console.log(allBookLink, "Context123");
+    // console.log(allBookLink, "Context123");
 
     let bookListUrl = `http://localhost:4000/books?page=${currentPageId}`;
-    
-    if(searchText && searchText != "" && searchCat && searchCat != ""){
-        bookListUrl = `http://localhost:4000/books?page=${currentPageId}&searchText=${searchText}&searchCat=${searchCat}`;
-    }else if ((searchText && searchText != "")) {
+
+    if (searchText && searchText != "" && searchCat && searchCat != "" && searchWriter && searchWriter != "") {
+
+        bookListUrl = `http://localhost:4000/books?page=${currentPageId}&searchText=${searchText}&searchCat=${searchCat}&searchWriter=${searchWriter}`;
+
+    } else if (searchText && searchText != "") {
+
         bookListUrl = `http://localhost:4000/books?page=${currentPageId}&searchText=${searchText}`;
-    }else if ((searchCat && searchCat !="")) {
+
+    } else if (searchCat && searchCat != "") {
+
         bookListUrl = `http://localhost:4000/books?page=${currentPageId}&searchCat=${searchCat}`;
+
+    } else if (searchWriter && searchWriter != "") {
+
+        bookListUrl = `http://localhost:4000/books?page=${currentPageId}&searchWriter=${searchWriter}`;
+
     }
     // else if(allBookLink) {
     //     bookListUrl = `http://localhost:4000/books`;
@@ -36,7 +47,7 @@ const DashBooks = () => {
         const data = await response.json();
         console.log(data.allBooks);
         setDashBooks(data.allBooks);
-        setAllBookLink(data.allBooks);
+        // setAllBookLink(data.allBooks);
         setTotalPages(data.totalPages);
     }
 
@@ -46,8 +57,8 @@ const DashBooks = () => {
 
     const deleteBook = async (id) => {
         if (window.confirm("Delete this book?")) {
-            const response = await fetch(`http://localhost:4000/books/deletebook/${id}`, 
-            { method: 'DELETE' });
+            const response = await fetch(`http://localhost:4000/books/deletebook/${id}`,
+                { method: 'DELETE' });
             const data = await response.json();
             console.log(data);
             navigate('/dashboard/books');
@@ -60,12 +71,13 @@ const DashBooks = () => {
         console.log(pageID);
         setCurrentPageId(pageID);
     }
-    const searchCatData = (data)=>{
+    const searchCatData = (data) => {
         console.log(data);
         if (data.searchText != "") setCurrentPageId(1)
         setSearchText(data.searchText);
         setSearchCat(data.searchCat);
-        console.log(data.searchCat)
+        setSearchWriter(data.searchWriter);
+        console.log(data.searchCat);
     }
 
 

@@ -7,6 +7,7 @@ const FilterBook = ({ getFilterData }) => {
     const [allCategories, setAllCategories] = useState([]);
     const [searchCat, setSearchCat] = useState("");
     const [writers, setWriters] = useState([]);
+    const [searchWriter, setSearchWriter] = useState("");
 
     const getCategories = async () => {
         const response = await fetch('http://localhost:4000/categories');
@@ -30,7 +31,8 @@ const FilterBook = ({ getFilterData }) => {
         e.preventDefault();
         let filterData = {
             searchText,
-            searchCat
+            searchCat,
+            searchWriter
         }
         getFilterData(filterData)
     }
@@ -56,7 +58,7 @@ const FilterBook = ({ getFilterData }) => {
                                 ))
                             }
                         </select>
-                        <select onChange={(e)=>setSearchCat(e.target.value)}>
+                        <select onChange={(e)=>setSearchWriter(e.target.value)}>
                             <option>Select Writer</option>
                             {
                                 writers.map((writer, index) => (
