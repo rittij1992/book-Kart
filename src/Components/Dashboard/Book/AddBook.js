@@ -8,6 +8,7 @@ const AddBook = () => {
     const [bookRelease, setBookRelease] = useState("");
     const [bookWriter, setBookWriter] = useState("");
     const [category, setCategory] = useState("");
+    const [selectCoverImg, setSelectCoverImg] = useState(null);
 
     const getCategories = async () => {
         const response = await fetch(`http://localhost:4000/categories`);
@@ -22,7 +23,13 @@ const AddBook = () => {
 
     const addBook = async (e) => {
         e.preventDefault();
-        const newBookData = {name:bookName, writer:bookWriter, release:bookRelease, category}
+        const formData = new FormData();
+        formData.append("name",bookName)
+        formData.append("writer",bookWriter);
+        formData.append("release",bookRelease);
+        formData.append("category", category);
+        formData.append("coverImage", selectCoverImg);
+        // const newBookData = {name:bookName, writer:bookWriter, release:bookRelease, category}
         // console.log(newBookData);
         const response = await fetch('http://localhost:4000/books/addbook',
         {
@@ -30,18 +37,26 @@ const AddBook = () => {
             headers: {
                 'content-type':'application/json'
             },
-            body: JSON.stringify(newBookData)
+            body: formData
         });
         const data = await response.json();
         console.log(data);
         navigate('/dashboard/books');
     };
 
+    const changeUploadImageFile = (e)=>{
+        setSelectCoverImg(e.target.files[0]);
+        
+    }
+
     return (
         <div className="container">
             <div className="row">
                 <div className="col-sm-9">
                     <form onSubmit={addBook}>
+                        <div>
+                            <input onChange={changeUploadImageFile} type="file" className="form-control"></input>
+                        </div>
                         <div className="my-1 form-group">
                             <label>Name:</label>
                             <input onChange={(e) => setBookName(e.target.value)} className="form-control" name="bookName"></input>
