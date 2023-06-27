@@ -16,7 +16,6 @@ const DashBooks = () => {
     const [searchText, setSearchText] = useState('');
     const [searchCat, setSearchCat] = useState('');
     const [searchWriter, setSearchWriter] = useState('');
-    console.log(process.env.PUBLIC_URL, "env123");
 
 
     // console.log(allBookLink, "Context123");
@@ -122,7 +121,7 @@ const DashBooks = () => {
                                             <img
                                             height={100}
                                             width={70}
-                                            src={`/logo512.png`} />
+                                            src={`/dummy-image-square.jpg`} />
                                     }
 
                                 </th>

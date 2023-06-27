@@ -24,29 +24,26 @@ const AddBook = () => {
     const addBook = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append("name",bookName)
-        formData.append("writer",bookWriter);
-        formData.append("release",bookRelease);
-        formData.append("category", category);
-        formData.append("coverImage", selectCoverImg);
+        formData.append("name", bookName)
+        // formData.append("writer", bookWriter);
+        // formData.append("release", bookRelease);
+        // formData.append("category", category);
+        // formData.append("coverImage", selectCoverImg);
         // const newBookData = {name:bookName, writer:bookWriter, release:bookRelease, category}
         // console.log(newBookData);
         const response = await fetch('http://localhost:4000/books/addbook',
-        {
-            method: 'POST',
-            headers: {
-                'content-type':'application/json'
-            },
-            body: formData
-        });
+            {
+                method: 'POST',
+                
+                body: formData
+            });
         const data = await response.json();
         console.log(data);
-        navigate('/dashboard/books');
+        // navigate('/dashboard/books');
     };
 
-    const changeUploadImageFile = (e)=>{
+    const changeUploadImageFile = (e) => {
         setSelectCoverImg(e.target.files[0]);
-        
     }
 
     return (
@@ -78,7 +75,7 @@ const AddBook = () => {
                                 onChange={(e) => setCategory(e.target.value)}>
                                 <option value="">Select Category</option>
                                 {
-                                    categories.map((cat, index)=>(
+                                    categories.map((cat, index) => (
                                         <option key={index} value={cat._id}>{cat.categoryName}</option>
                                     ))
                                 }
